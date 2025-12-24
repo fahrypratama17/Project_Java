@@ -1,15 +1,54 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import formatter.ReceiptFormatter;
+import formatter.TextReceiptFormatter;
+import model.ExpressShipment;
+import model.RegularShipment;
+import model.Shipment;
+import model.ShipmentType;
+import service.ShipmentService;
+
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        Scanner input = new Scanner(System.in);
+        ReceiptFormatter formatter = new TextReceiptFormatter();
+        ShipmentService service = new ShipmentService();
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+        boolean running = true;
+
+        while (running) {
+            System.out.println("=== MENU EKSPEDISI ===");
+            for (ShipmentType type : ShipmentType.values()) {
+                System.out.println(type.getCode() + ". " + type.getLabel());
+            }
+
+            System.out.print("Pilih: ");
+
+            try {
+                ShipmentType type = ShipmentType.fromCode(Integer.parseInt(input.nextLine()));
+
+                if (type == ShipmentType.EXIT) break;
+
+                System.out.print("ID Paket: ");
+                String id = input.nextLine();
+                System.out.print("Pengirim: ");
+                String sender = input.nextLine();
+                System.out.print("Penerima: ");
+                String receiver = input.nextLine();
+                System.out.println("Berat (kg): ");
+                double weight = Double.parseDouble(input.nextLine());
+
+                Shipment shipment = (type == ShipmentType.REGULAR)
+                        ? new RegularShipment(id, sender, receiver, weight)
+                        : new ExpressShipment(id, sender, receiver, weight);
+
+                System.out.println(formatter.format(shipment));
+                service.sendShipment(shipment);
+
+            } catch (Exception e) {
+                System.out.print("Input tidak valid!");
+            }
         }
+        input.close();
     }
 }
