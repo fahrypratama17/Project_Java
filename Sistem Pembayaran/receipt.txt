@@ -1,0 +1,14 @@
+=== STRUK PEMBAYARAN ===
+Metode : E-WALLET
+Detail : E-WALLET
+Total  : 3000000.0
+Waktu  : 2025-12-23T15:38:38.641975
+========================
+
+=== STRUK PEMBAYARAN ===
+Metode : BANK TRANSFER
+Detail : BANK TRANSFER
+Total  : 3000000.0
+Waktu  : 2025-12-23T15:38:58.164676800
+========================
+
